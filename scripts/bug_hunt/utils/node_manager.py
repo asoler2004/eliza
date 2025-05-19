@@ -5,6 +5,7 @@ from typing import Optional, Dict, Any
 import json
 import nodeenv
 import logging
+from security import safe_command
 
 # Get logger for this module
 logger = logging.getLogger(__name__)
@@ -41,8 +42,7 @@ class NodeManager:
             self.logger.info(f"Initial command: {' '.join(cmd)}")
             self.logger.info(f"Will execute in directory: {plugin_dir}")
 
-            result = subprocess.run(
-                cmd,
+            result = safe_command.run(subprocess.run, cmd,
                 cwd=str(plugin_dir),  # Execute in plugin directory
                 capture_output=True,
                 text=True,
@@ -132,8 +132,7 @@ class NodeManager:
                 target_path
             ]
 
-            result = subprocess.run(
-                cmd,
+            result = safe_command.run(subprocess.run, cmd,
                 cwd=str(self.work_dir),
                 capture_output=True,
                 text=True,
