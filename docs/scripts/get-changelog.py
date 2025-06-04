@@ -12,10 +12,10 @@ import re
 import sys
 import os
 import json
-import requests
 from datetime import datetime
 from pathlib import Path
 import argparse
+from security import safe_requests
 
 def fetch_releases(repo, token=None, since_version=None):
     """
@@ -27,7 +27,7 @@ def fetch_releases(repo, token=None, since_version=None):
         headers["Authorization"] = f"token {token}"
     
     url = f"https://api.github.com/repos/{repo}/releases"
-    response = requests.get(url, headers=headers)
+    response = safe_requests.get(url, headers=headers)
     
     if response.status_code != 200:
         print(f"Error fetching releases: {response.status_code}")
